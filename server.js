@@ -12,6 +12,7 @@ const port = process.env.PORT || 5000;
 
 // import the router
 const authRouter = require('./routes/auth.js');
+const restaurantRouter = require('./routes/restaurant.js');
 
 //
 
@@ -34,6 +35,8 @@ app.get('/', (req, res) => {
 
 // use the router
 app.use('/api/auth', authRouter);
+
+app.use('/api/restaurant', restaurantRouter);
 
 app.listen(process.env.PORT || 5000, () => {
    console.log(`Server is running on port ${port}`);
