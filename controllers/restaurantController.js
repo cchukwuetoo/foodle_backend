@@ -1,6 +1,14 @@
+const Joi = require('joi');
+const {restaurantSchema } = require('../validations/restaurantValidation.js');
 const Restaurant = require('../models/Restaurant.js');
 
 const createRestaurant = async (req, res) => {
+
+    const {error} = restaurantSchema.validate(req.body);
+
+    if (error) {
+        return res.status(400).json({status: false, message: error.details[0].message});
+    }
 
     const  newRestaurant = new Restaurant(req.body)
 

@@ -4,6 +4,8 @@ const CryptoJS = require('crypto-js');
 const jwt = require('jsonwebtoken');
 const admin = require('firebase-admin');
 const {v4: uuidv4} = require('uuid');
+const {registerSchema } = require('../validations/registerValidation.js');
+const {loginSchema } = require('../validations/loginValidation.js');
 
 
 module.exports = {
@@ -11,14 +13,18 @@ module.exports = {
     // Register a new user
     createUser: async (req, res) => {
 
+        // validate the incoming request body
+        const { error } = registerSchema.validate(req.body);
+
+        if (error) {
+            return res.status(400).json({message: error.details[0].message});
+        }
+
         // information stored on the request body
 
         const {username, email, password, phone, address, userType} = req.body;
 
-        // Validate required fileds
-        if (!username || !email || !password || !phone || !address || !userType) {
-            return res.status(400).json({message: 'All fields are required'});
-        }
+
 
         const hash = await bcrypt.hash(password, 10);
 
@@ -54,6 +60,14 @@ module.exports = {
 
 
     loginUser: async (req, res) => {
+
+        // validate the incoming request body
+        const { error } = loginSchema.validate(req.body);
+
+        if (error) {
+            return res.status(400).json({message: error.details[0].message});
+        }
+
 
         try {
             const user = await User.findOne({email: req.body.email}, {__v: 0, createdAt: 0, updatedAt: 0, email: 0});
