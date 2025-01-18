@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
 
         const token = authHeader.split(' ')[1]; // get the token from the header
 
-        jwt.verify(token, processs.env.SECRET, async (err, user) => {
+        jwt.verify(token, process.env.SECRET, async (err, user) => {
 
             if (err) {
                 return res.status(403).json({message: 'Token is not valid'});
