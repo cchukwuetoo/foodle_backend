@@ -7,6 +7,10 @@ const addFood = async (req, res) => {
 
     const {error} = foodValidation.validate(req.body);
 
+    if (error) {
+        return res.status(400).json({status: false, message: error.details[0].message});
+    }
+
     const newFood = new Food(req.body);
 
     try {
@@ -78,11 +82,109 @@ const addFood = async (req, res) => {
 
     }
 
+    const foodAvailability = async (req, res) => {
+
+    const foodId = req.params.id;
+
+    try {
+        const food = await Food.findById(foodId);
+        if (!food) {
+            return res.status(404).json({status: false, message: "food not found"});
+        }
+
+        food.isAvailable = !food.isAvailable;
+
+        await  food.save();
+
+        res.status(200).json({status: true, message: "food availability updated successfully"});
+
+    } catch (error) {
+
+        res.status(500).json({status: false, message: error.message})
+
+    }
+    }
+
+
+
+    const updateFoodById = async (req, res) => {
+
+    const foodId = req.params.id;
+
+    const {error} = foodValidation.validate(req.body);
+
+    if (error) {
+        return res.status(400).json({status: false, message: error.details[0].message});
+    }
+
+    try {
+
+        const updatedFood = await Food.findByIdAndUpdate(foodId, req.body, {new: true});
+
+        if (!updatedFood) {
+            return res.status(404).json({status: false, message: "food not found"});
+        }
+
+        res.status(200).json({status: true, message: "food updated successfully"});
+
+    } catch (error) {
+
+        res.status(500).json({status: false, message: error.message})
+
+    }
+
+
+    }
+
+
+    const addFoodTag =  async (req, res) => {
+
+    const foodId = req.params.id;
+    const { tag } = req.body
+
+        try {
+
+        const food = await Food.findById(foodId);
+
+        if (!food) {
+            return res.status(404).json({status: false, message: "food not found"});
+        }
+
+        if (food.foodTags.includes(tag)) {
+            return res.status(400).json({status: false, message: "tag already exists"});
+        }
+
+        food.foodTags.push(tag);
+        await food.save();
+
+        res.status(200).json({status: true, message: "tag added successfully"});
+
+        } catch (error) {
+        res.status(500).json({status: false, message: error.message})
+        }
+
+
+}
+
+const deleteFood = async (req, res) => {
+    const foodId = req.params.id;
+
+    try {
+        const food = await Food.findById(foodId);
+
+        if (!food) {
+            return res.status(404).json({status: false, massage: "food item not found"})
+        }
+
+        await Food.findByIdAndDelete(foodId);
+
+        res.status(200).json({status: true, message: "Food item deleted successfully"})
+    } catch (error) {
+        res.status(500).json({status: false, message: error.message })
+    }
+}
 
 
 
 
-
-
-
-module.exports = {addFood, getAllFood, getFoodById}
+module.exports = {addFood, getAllFood, getFoodById, getFoodByRestaurant, updateFoodById, foodAvailability, addFoodTag, deleteFood}
