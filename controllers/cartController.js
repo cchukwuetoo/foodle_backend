@@ -167,4 +167,4 @@ const decrementProductQty = async (req, res) => {
 
 
 
-module.exports = {addProductToCart, removeProductFromCart, fetchUserCart, clearUserCart}
+module.exports = {addProductToCart, removeProductFromCart, fetchUserCart, clearUserCart, getCartCount, decrementProductQty};

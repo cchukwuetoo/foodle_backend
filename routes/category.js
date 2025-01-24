@@ -7,3 +7,5 @@ router.put('/category/:id', verifyAdmin, categoryController.updateCategory);
 router.post('/category', verifyAdmin, categoryController.createCategory);
 router.delete('/delete/:id', verifyAdmin, categoryController.deleteCategory);
 router.get('/get-categories', verifyAdmin, categoryController.getAllCategory);
+
+module.exports = router;

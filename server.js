@@ -15,6 +15,7 @@ const authRouter = require('./routes/auth.js');
 const restaurantRouter = require('./routes/restaurant.js');
 const foodRouter = require('./routes/food.js');
 const categoryRouter = require('./routes/category.js');
+const cartRouter = require('./routes/cart.js');
 
 
 //
@@ -42,6 +43,10 @@ app.use('/api/auth', authRouter);
 app.use('/api/restaurant', restaurantRouter);
 
 app.use('/api/food', foodRouter);
+
+app.use('/api/category', categoryRouter);
+
+app.use('/api/cart', cartRouter);
 
 app.listen(process.env.PORT || 5000, () => {
    console.log(`Server is running on port ${port}`);
