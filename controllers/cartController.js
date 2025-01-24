@@ -1,11 +1,21 @@
 const Cart = require('../models/Cart');
 
+const cartValidationSchema = require('../validations/cartValidation');
+
 
 
 const addProductToCart = async (req, res) => {
 
     const userId = req.user.id; // get the user id from the request object
     let count;
+
+    const {error, value} = cartValidationSchema.validate(req.body);
+
+    if (error) {
+        return res.status(400).json({status: false, message: error.details[0].message});
+    }
+
+
 
     const {foodId, totalPrice, quantity, additives, instructions} = req.body
 
