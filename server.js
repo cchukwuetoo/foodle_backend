@@ -18,6 +18,7 @@ const categoryRouter = require('./routes/category.js');
 const cartRouter = require('./routes/cart.js');
 const addressRouter = require('./routes/address.js');
 const orderRouter = require('./routes/order.js');
+const driverRouter = require('./routes/driver.js');
 
 
 //
@@ -53,6 +54,8 @@ app.use('/api/cart', cartRouter);
 app.use('/api/address', addressRouter);
 
 app.use('/api/order', orderRouter);
+
+app.use('/api/driver', driverRouter);
 
 app.listen(process.env.PORT || 5000, () => {
    console.log(`Server is running on port ${port}`);
