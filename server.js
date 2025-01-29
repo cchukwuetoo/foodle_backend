@@ -12,6 +12,7 @@ const port = process.env.PORT || 5000;
 
 // import the router
 const authRouter = require('./routes/auth.js');
+const userRouter = require('./routes/user.js');
 const restaurantRouter = require('./routes/restaurant.js');
 const foodRouter = require('./routes/food.js');
 const categoryRouter = require('./routes/category.js');
@@ -30,6 +31,10 @@ dotenv.config();
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI).then(() => console.log('DB Connected')).catch(err => console.log(err));
 
+
+
+
+
 // Body parser Middleware
 
 app.use(bodyParser.json());
@@ -44,6 +49,10 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRouter);
 
 app.use('/api/restaurant', restaurantRouter);
+
+app.use('/api/user', userRouter);
+
+//app.use('/api/user', userRouter);
 
 app.use('/api/food', foodRouter);
 

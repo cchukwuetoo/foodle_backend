@@ -4,15 +4,15 @@ const router = require('express').Router();
 const {verifyVendor, veryAndAuthorization, verifyToken, verifyAdmin, verifyDriver} = require('../middleware/verifyToken.js');
 
 
-router.post('/', veryAndAuthorization, restaurantController.createRestaurant);
+router.post('/create-restaurant', veryAndAuthorization, restaurantController.createRestaurant);
 
 router.get('/byId/:id', restaurantController.getRestaurant);
 
 router.get('/:code',  veryAndAuthorization, restaurantController.getRandomRestaurants);
 
-router.delete('/:id', verifyVendor, restaurantController.deleteRestaurant);
+router.delete('/delete/:id', verifyVendor, restaurantController.deleteRestaurant);
 
-router.patch('/:id', verifyVendor, restaurantController.serviceAvailability);
+router.patch('/toggle/:id', veryAndAuthorization, restaurantController.serviceAvailability);
 
 module.exports = router;
 
