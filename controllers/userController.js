@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+const {registerSchema} = require('../validations/registerValidation');
+const {v4: uuidv4} = require("uuid");
 
 
 const createUser = async (req, res) => {
@@ -8,12 +10,21 @@ const createUser = async (req, res) => {
     const {username, email, password, phone, address, userType} = req.body;
 
     try {
-        if (!username || !email || !password || !phone || !address || !userType) {
-            return res.status(400).json({message: 'All fields are required'});
+
+        const {error} = registerSchema.validate(req.body);
+
+        if (error) {
+            return res.status(400).json({message: error.details[0].message});
+        }
+
+        const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Username or email already exists' });
         }
 
         const newUser = new User({
             username,
+            uid: uuidv4(),
             email,
             password,
             phone,
@@ -53,6 +64,9 @@ const updateUser = async (req, res) => {
         await User.findByIdAndUpdate(userId, {
             $set: req.body
         })
+
+
+        return res.status(200).json({message: 'User updated successfully'});
 
     } catch(error) {
         console.log('Error updating user', error);

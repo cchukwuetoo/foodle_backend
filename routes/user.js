@@ -1,10 +1,10 @@
 const router = require('express').Router();
-const {getUser, createUser, deleteUser, updateUser} = require('../controllers/userController.js');
-const {verifyToken, verifyAndAuthorization, verifyVendor, verifyDriver} = require('../middleware/verifyToken.js');
+const userController = require('../controllers/userController.js');
+const {verifyToken, veryAndAuthorization, verifyVendor, verifyDriver} = require('../middleware/verifyToken.js');
 
-router.get('/', verifyAndAuthorization, getUser);
-router.post('/', verifyAndAuthorization, createUser);
-router.put('/:id', verifyAndAuthorization, updateUser);
-router.delete('/:id', verifyAndAuthorization, deleteUser);
+router.get('/get-users/:id', veryAndAuthorization, userController.getUser);
+router.post('/create-user', veryAndAuthorization, userController.createUser);
+router.put('/update-user/:id', userController.updateUser);
+router.delete('/delete-user/:id', veryAndAuthorization, userController.deleteUser);
 
 module.exports = router;

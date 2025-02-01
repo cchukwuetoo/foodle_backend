@@ -29,6 +29,7 @@ const createRestaurant = async (req, res) => {
 
 const serviceAvailability = async (req, res) => {
 
+
     const restaurantId = req.params.id; // get the restaurant id from the request params
 
     try {
